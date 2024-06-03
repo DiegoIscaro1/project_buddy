@@ -116,5 +116,5 @@ download_kaggle:
 	mkdir -p raw_data
 	cd raw_data
 	kaggle datasets download -d nikhileswarkomati/suicide-watch
-	tar -xvf raw_data/suicide-watch.zip
+	tar -xvf suicide-watch.zip
 	mv Suicide_Detection.csv raw_data
