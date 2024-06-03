@@ -20,3 +20,4 @@ uvicorn
 
 # Cleaning data
 nltk
+re
