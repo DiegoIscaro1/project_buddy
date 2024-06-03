@@ -111,3 +111,10 @@ docker_deploy:
 		--memory $(GAR_MEMORY) \
 		--region $(GCP_REGION) \
 		--env-vars-file .env.yaml
+
+download_kaggle:
+	mkdir -p raw_data
+	cd raw_data
+	kaggle datasets download -d nikhileswarkomati/suicide-watch
+	tar -xvf raw_data/suicide-watch.zip
+	mv Suicide_Detection.csv raw_data
