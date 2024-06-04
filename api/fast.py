@@ -1,5 +1,5 @@
 # TODO: Import your package, replace this by explicit imports of what you need
-from packagename.main import predict
+from buddy.main import predict
 import pandas as pd
 
 from fastapi import FastAPI
