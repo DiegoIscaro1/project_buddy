@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import re
 from sklearn import preprocessing
 from nltk.corpus import stopwords
@@ -35,6 +36,7 @@ def preprocess_data (data: pd.DataFrame):
     print("Text Cleaning...")
     data.loc[:, "text_cleaned"] = data["text"].progress_map(clean_text)
     print ("Cleaning Done!")
+    data['text_cleaned'] = data['text_cleaned'].map(lambda x: np.nan if x == '' else x)
     data = data.dropna(axis=0).drop_duplicates(subset=['text_cleaned'])
     data = data.drop(columns="text")
     data = data.reset_index(drop=True)
