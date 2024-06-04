@@ -16,7 +16,7 @@ FROM python:3.10.6
 
 
 # Copy everything we need into the image
-COPY packagename packagename
+COPY buddy buddy
 COPY api api
 COPY scripts scripts
 COPY requirements.txt requirements_docker.txt
