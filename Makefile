@@ -118,3 +118,8 @@ download_kaggle:
 	kaggle datasets download -d nikhileswarkomati/suicide-watch
 	tar -xvf suicide-watch.zip
 	mv Suicide_Detection.csv raw_data
+
+preprocess_data:
+	python buddy/preprocessing.py
+
+download_preprocess: download_kaggle preprocess_data
