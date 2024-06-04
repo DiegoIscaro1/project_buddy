@@ -1,13 +1,15 @@
 # data science
 numpy
 pandas
+scipy
+
 
 # Uncomment if you use sklearn
 # scikit-learn
 
 # Install the correct TensorFlow version
 # Uncomment if you use TensorFlow
-# tensorflow==2.15    # For both Intel and Apple silicon
+tensorflow==2.15    # For both Intel and Apple silicon
 
 # Google Cloud
 google-cloud-storage
@@ -16,4 +18,7 @@ python-dotenv
 
 # API
 fastapi
+pytz
 uvicorn
+httpx
+pytest-asyncio
