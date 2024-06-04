@@ -32,11 +32,12 @@ def upload_csv (data: pd.DataFrame):
     data.to_csv("raw_data/Suicide_Detection_cleaned.csv", index=False)
 
 def preprocess_data (data: pd.DataFrame):
-    data = data.reset_index(drop=True)
     print("Text Cleaning...")
     data.loc[:, "text_cleaned"] = data["text"].progress_map(clean_text)
     print ("Cleaning Done!")
+    data = data.dropna(axis=0).drop_duplicates(subset=['text_cleaned'])
     data = data.drop(columns="text")
+    data = data.reset_index(drop=True)
     data = label_encoding_target(data)
     upload_csv(data)
 
