@@ -3,7 +3,7 @@
 #      a slim or tensorflow base
 
 #      Standard version
-FROM python:3.10
+FROM python:3.10.6
 
 #      Slim version
 # FROM python:3.10-slim
@@ -21,11 +21,11 @@ COPY api api
 COPY scripts scripts
 COPY requirements.txt requirements_docker.txt
 COPY setup.py setup.py
-COPY credentials.json credentials.json
+# COPY credentials.json credentials.json
 
 # Install everything
-RUN pip install --upgrade pip
-RUN pip install -r requirements_docker.txt
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir -r requirements_docker.txt
 RUN pip install .
 
 # Make directories that we need, but that are not included in the COPY

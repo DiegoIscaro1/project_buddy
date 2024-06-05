@@ -1,7 +1,13 @@
-# Project Name
-- Document your project here
-- Description
-- Data used
+# project_buddy
+
+- Description:
+
+Suicidal risk detection
+
+- Data used:
+
+"https://www.kaggle.com/datasets/nikhileswarkomati/suicide-watch"
+
 - Where your API can be accessed
 - ...
 
