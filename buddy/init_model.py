@@ -2,7 +2,6 @@ import pandas as pd
 from sklearn.pipeline import make_pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from buddy.preprocessing import transform_input
 import joblib
 
 def naive_bayes_model():
@@ -32,10 +31,6 @@ def save_model (model):
     print("Saving Model ...")
     joblib.dump(model, 'models/nlp_model.pkl')
 
-def load_model ():
-    print("Loading Model ...")
-    model = joblib.load('models/nlp_model.pkl')
-    return model
 
 if __name__ == "__main__":
     save_model(
