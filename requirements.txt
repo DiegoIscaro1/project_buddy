@@ -1,7 +1,6 @@
 # data science
 numpy
 pandas
-scipy
 
 
 # Uncomment if you use sklearn
