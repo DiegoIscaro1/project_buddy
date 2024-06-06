@@ -2,7 +2,6 @@ import unittest
 import sys
 import os
 
-# Add the buddy directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'buddy')))
 
 from buddy.run_model import load_model
@@ -12,7 +11,7 @@ import pandas as pd
 
 class TestModel(unittest.TestCase):
     def setUp(self):
-        # Load your model here. Adjust the path to your model file if necessary.
+        # Load model
         self.model = load_model('sgd_classifier')
 
     def test_model_output_values(self):
