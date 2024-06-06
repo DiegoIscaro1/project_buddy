@@ -36,7 +36,8 @@ def train_model (data, model):
     print("Model trained ...")
     return trained_model
 
-def predict_model (X_pred, trained_model):
+def predict_model (txt: str, trained_model):
+    X_pred = transform_input(txt)
     y_pred = trained_model.predict(X_pred)
     return y_pred
 
@@ -60,6 +61,6 @@ if __name__ == "__main__":
         model_name
         )
     model_loaded = load_model(model_name)
-    assert predict_model(transform_input("I'm super happy"),model_loaded) == 0, " Text:'I'm super happy' should be equals to 0 "
-    assert predict_model(transform_input("I wanna kill myself"),model_loaded) == 1, " Text: 'I wanna kill myself' should be equals to 1 "
+    assert predict_model("I'm super happy",model_loaded) == 0, " Text:'I'm super happy' should be equals to 0 "
+    assert predict_model("I wanna kill myself",model_loaded) == 1, " Text: 'I wanna kill myself' should be equals to 1 "
     print ("Model does work fine!")
