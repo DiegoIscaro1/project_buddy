@@ -3,9 +3,9 @@ from sklearn.pipeline import make_pipeline
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from preprocessing import transform_input
 import joblib
 from sklearn.linear_model import SGDClassifier
-
 
 def naive_bayes_model():
     # Pipeline vectorizer + Naive Bayes
@@ -44,9 +44,10 @@ def save_model (model, model_name):
     print("Saving Model ...")
     joblib.dump(model, f'models/{model_name}_model.pkl')
 
-def load_model ():
+def load_model (model_name):
     print("Loading Model ...")
-    model = joblib.load('models/nlp_model.pkl')
+    model = joblib.load(f"models/{model_name}_model.pkl")
+    print("Model loaded...")
     return model
 
 if __name__ == "__main__":
@@ -58,3 +59,7 @@ if __name__ == "__main__":
             ),
         model_name
         )
+    model_loaded = load_model(model_name)
+    assert predict_model(transform_input("I'm super happy"),model_loaded) == 0, " Text:'I'm super happy' should be equals to 0 "
+    assert predict_model(transform_input("I wanna kill myself"),model_loaded) == 1, " Text: 'I wanna kill myself' should be equals to 1 "
+    print ("Model does work fine!")

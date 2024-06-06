@@ -22,3 +22,6 @@ uvicorn
 # Cleaning data
 nltk
 tqdm
+
+# Transformer
+BertTokenizer
