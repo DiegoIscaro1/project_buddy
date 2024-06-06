@@ -15,12 +15,9 @@ def label_encoding_target (data: pd.DataFrame):
     le = preprocessing.LabelEncoder()
     # Encode the target variable and store it in a new column named "target"
     data["target"] =  le.fit_transform(data["class"])
-    # Drop old column
     data = data.drop(columns="class")
-    # return new data
     return data
 
-# Function to clean the data
 def clean_text(sentence):
     # Remove leading and trailing whitespaces
     sentence = sentence.strip()
@@ -40,11 +37,9 @@ def clean_text(sentence):
     without_stopwords = [word for word in tokenized if not word in stop_words]
     # Initiate Lemmatizer
     lemma=WordNetLemmatizer()
-    # Lemmatize
     lemmatized = [lemma.lemmatize(word) for word in without_stopwords]
     # Join the lemmatized words back into a string
     cleaned = ' '.join(lemmatized)
-    # Return clean data
     return cleaned
 
 # Function to upload cleaned data to a CSV file
@@ -53,20 +48,18 @@ def upload_csv (data: pd.DataFrame):
 
 def preprocess_data(data: pd.DataFrame):
     print("Text Cleaning...")
-    # Apply the clean_text function to the "text" column and store the result in a new column named "text_cleaned"
+    # Apply the clean_text function to the "text" column
     data.loc[:, "text_cleaned"] = data["text"].progress_map(clean_text)
     print ("Cleaning Done!")
     # Replace empty strings with NaN values
     data['text_cleaned'] = data['text_cleaned'].map(lambda x: np.nan if x == '' else x)
     # Drop rows with NaN values in the "text_cleaned" column and remove duplicates
     data = data.dropna(axis=0).drop_duplicates(subset=['text_cleaned'])
-    # Drop the original "text" column
     data = data.drop(columns="text")
+    data = data.reset_index(drop=True)
     # Encode the target variable
     data = label_encoding_target(data)
-    # Upload the cleaned data to a CSV file
     upload_csv(data)
-    return data
 
 # Function to transform input text
 def transform_input (text: str):
