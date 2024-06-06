@@ -33,7 +33,6 @@ class TestModel(unittest.TestCase):
             with self.subTest(text=text):
                 # Clean the text and convert it to a string
                 cleaned_text = str(transform_input(text))
-                # Wrap the cleaned text in a list
                 prediction = self.model.predict([cleaned_text])[0]
                 # Check that the prediction is either 0 or 1
                 self.assertIn(prediction, [0, 1], f"Prediction for '{text}' should be 0 or 1")
@@ -58,14 +57,13 @@ class TestModel(unittest.TestCase):
             with self.subTest(text=text):
                 # Clean the text and convert it to a string
                 cleaned_text = str(transform_input(text))
-                # Wrap the cleaned text in a list
                 prediction = self.model.predict([cleaned_text])[0]
-                # Check the shape of the prediction
-                expected_shape = ()  # Each prediction should be a scalar
+                # Check the shape
+                expected_shape = ()
                 self.assertEqual(np.shape(prediction), expected_shape, f"Prediction shape for '{text}' is incorrect")
 
     def test_transform_input(self):
-    # List of example inputs and their expected cleaned texts
+    # List of example inputs and their expected cleaned text
         test_data = [
             ("I feel like ending it all.", "feel like ending"),
             ("I am feeling great today!", "feeling great today"),
@@ -85,7 +83,6 @@ class TestModel(unittest.TestCase):
                 cleaned_text = transform_input(input_text)
                 # Convert the Pandas Series to a string
                 cleaned_text = cleaned_text[0] if isinstance(cleaned_text, pd.Series) else cleaned_text
-                # Check if the expected cleaned text is a substring of the transformed text
                 self.assertIn(expected_cleaned_text, cleaned_text, f"Transformation for '{input_text}' is incorrect")
 
 
