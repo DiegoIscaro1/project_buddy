@@ -4,7 +4,7 @@ pandas
 
 
 # Uncomment if you use sklearn
-scikit-learn
+scikit-learn==1.5.0
 
 # Install the correct TensorFlow version
 # Uncomment if you use TensorFlow
@@ -25,7 +25,6 @@ tqdm
 
 # Transformer
 transformers==4.41.2
-
 
 # Testing packages
 pytest
