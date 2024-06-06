@@ -123,3 +123,6 @@ preprocess_data:
 	python buddy/preprocessing.py
 
 download_preprocess: download_kaggle preprocess_data
+
+pytest:
+	PYTHONDONTWRITEBYTECODE=1 pytest -v --color=yes
