@@ -3,7 +3,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from preprocessing import transform_input
+from buddy.preprocessing import transform_input
 import joblib
 from sklearn.linear_model import SGDClassifier
 
@@ -37,6 +37,7 @@ def train_model (data, model):
     return trained_model
 
 def predict_model (txt: str, trained_model):
+    print("Predicting...")
     X_pred = transform_input(txt)
     y_pred = trained_model.predict(X_pred)
     return y_pred

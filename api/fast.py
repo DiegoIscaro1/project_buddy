@@ -1,5 +1,6 @@
 # TODO: Import your package, replace this by explicit imports of what you need
 from buddy.main import predict
+from buddy import preprocessing, run_model
 import pandas as pd
 
 from fastapi import FastAPI
@@ -29,8 +30,11 @@ def get_predict(str):
     # For the sake of demonstration, just return the sum of the two inputs and the original input
     # Call the predict method with the DataFrame as argument
     prediction = predict(str)
+    if prediction == 0:
+        output = "This person is going fine!"
+    else:
+        output = "This person is going to commit SUICIDE!!!"
 
     return {
-        'prediction': prediction,
-        'length': len(str)
+        'prediction': output
     }
