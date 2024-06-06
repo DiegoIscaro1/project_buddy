@@ -25,6 +25,7 @@ def sgd_model():
     ])
     return pipeline_sgd,model_name
 
+# Train the model
 def train_model (data, model):
     # Feature/Target
     X = data["text_cleaned"]
@@ -36,22 +37,26 @@ def train_model (data, model):
     print("Model trained ...")
     return trained_model
 
+# Make predictions
 def predict_model (txt: str, trained_model):
     print("Predicting...")
     X_pred = transform_input(txt)
     y_pred = trained_model.predict(X_pred)
     return y_pred
 
+# Save the model in Models folder
 def save_model (model, model_name):
     print("Saving Model ...")
     joblib.dump(model, f'models/{model_name}_model.pkl')
 
+# Load model from models folder
 def load_model (model_name):
     print("Loading Model ...")
     model = joblib.load(f"models/{model_name}_model.pkl")
     print("Model loaded...")
     return model
 
+# Main to call the function
 if __name__ == "__main__":
     model, model_name = sgd_model()
     save_model(
