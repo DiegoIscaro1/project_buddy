@@ -8,7 +8,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from preprocessing import transform_input
+from buddy.preprocessing import transform_input
 from sklearn.linear_model import SGDClassifier
 from google.cloud import storage
 
@@ -34,6 +34,7 @@ def sgd_model():
     ])
     return pipeline_sgd,model_name
 
+# Train the model
 def train_model (data, model):
     # Feature/Target
     X = data["text_cleaned"]
@@ -45,11 +46,14 @@ def train_model (data, model):
     print("\n✅ Model trained ...")
     return trained_model
 
+# Make predictions
 def predict_model (txt: str, trained_model):
+    print("Predicting...")
     X_pred = transform_input(txt)
     y_pred = trained_model.predict(X_pred)
     return y_pred
 
+# Save the model in Models folder
 def save_model (model, model_name):
 
     print("\nSaving Model ...")
@@ -73,6 +77,7 @@ def save_model (model, model_name):
         print("\n❌ Model not saved")
     return None
 
+# Load model from models folder
 def load_model (model_name):
 
     if MODEL_TARGET == "gcs":
@@ -115,6 +120,7 @@ def load_model (model_name):
     else:
         return None
 
+# Main to call the function
 if __name__ == "__main__":
     model, model_name = sgd_model()
     save_model(
