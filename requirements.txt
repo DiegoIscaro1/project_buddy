@@ -24,7 +24,8 @@ nltk
 tqdm
 
 # Transformer
-BertTokenizer
+transformers==4.41.2
+
 
 # Testing packages
 pytest
