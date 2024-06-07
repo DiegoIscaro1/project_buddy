@@ -7,6 +7,7 @@ import glob
 from sklearn.pipeline import make_pipeline
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from buddy.preprocessing import transform_input
 from sklearn.linear_model import SGDClassifier
@@ -16,6 +17,14 @@ from google.cloud import storage
 MODEL_TARGET = os.environ.get("MODEL_TARGET")
 BUCKET_NAME = os.environ.get("BUCKET_NAME")
 LOCAL_REGISTRY_PATH = os.environ.get("LOCAL_REGISTRY_PATH")
+
+def logreg():
+    # Pipeline vectorizer + Logreg
+    pipeline_log_reg = Pipeline([
+        ('vectorizer', TfidfVectorizer(max_features=4000)),
+        ('model',LogisticRegression()),
+    ])
+    return pipeline_log_reg
 
 def naive_bayes_model():
     # Pipeline vectorizer + Naive Bayes
@@ -29,7 +38,7 @@ def sgd_model():
     # Pipeline vectorizer + sgd classifier
     pipeline_sgd = Pipeline([
         ('vectorizer', TfidfVectorizer(max_features=10000)),
-        ('classifier', SGDClassifier(alpha=0.0001, loss='hinge', penalty='l2')),
+        ('model', SGDClassifier(alpha=0.0001, loss="log_loss", penalty='l2')),
     ])
     return pipeline_sgd
 
@@ -41,6 +50,10 @@ def choice_model (model_name):
         return model
     elif model_name == "naive_bayes":
         model = naive_bayes_model()
+        print(f"\n✅ Model {model_name} found ...")
+        return model
+    elif model_name == "log_reg":
+        model = logreg()
         print(f"\n✅ Model {model_name} found ...")
         return model
     else:
@@ -61,7 +74,7 @@ def evaluate_model (data,model):
                                 scoring = ["accuracy"],
                                 verbose=2)
     mean_accuracy = cv_results["test_accuracy"].mean()
-    print (f"\nEvaluation : The model is accurate to {round(mean_accuracy),2}")
+    print (f"\nEvaluation : The model is accurate to {round(mean_accuracy,4)}")
     return mean_accuracy
 
 # Train the model
@@ -77,11 +90,20 @@ def train_model (data, model):
     return trained_model
 
 # Make predictions
-def predict_model (txt: str, trained_model):
+def predict_model (txt: str, trained_model, model_name):
     print("\nPredicting...")
     X_pred = transform_input(txt)
-    y_pred = trained_model.predict(X_pred)
-    return y_pred
+
+    # Give the probability of being 1
+    if model_name == "log_reg":
+        y_prob = trained_model.predict_proba(X_pred)
+        y_prob_suicide = round(y_prob[0,1],4)
+        return y_prob_suicide
+    # Give the prediction
+    else:
+        y_pred = trained_model.predict(X_pred)
+        y_pred_result = y_pred[0]
+        return y_pred_result
 
 # Save the model in Models folder
 def save_model (model, model_name):
@@ -171,9 +193,12 @@ def running_model(model_name):
         model_loaded = load_model(model_name)
 
         # Test model
-        assert predict_model("I'm super happy",model_loaded) == 0, "\n ❌ Text:'I'm super happy' should be equals to 0 "
-        assert predict_model("I wanna kill myself",model_loaded) == 1, "\n ❌ Text: 'I wanna kill myself' should be equals to 1 "
+        y_pred = predict_model("I'm super happy",model_loaded,model_name)
+        assert y_pred <= 0.5, print("\n ❌ Text:'I'm super happy' should be equals to 0 ")
+        y_pred = predict_model("I wanna kill myself",model_loaded,model_name)
+        assert y_pred >= 0.5, print("\n ❌ Text: 'I wanna kill myself' should be equals to 1 ")
         print ("\n✅ Model does work fine!")
+
 
     # If not suffucient accuracy, drop the model
     else :
@@ -183,30 +208,5 @@ def running_model(model_name):
 if __name__ == "__main__":
 
     # Initiate model
-    model_name = "sgd_classifier"
-    model = choice_model(model_name)
-
-    # Load data
-    data = pd.read_csv("raw_data/Suicide_Detection_cleaned.csv")
-
-    # Evaluate model
-    accuracy = evaluate_model(data,model)
-
-    # Train model if sufficient accuracy
-    if accuracy > 0.9:
-        trained_model = train_model(data,model)
-
-        # Save model
-        save_model(model, model_name)
-
-        # Load model
-        model_loaded = load_model(model_name)
-
-        # Test model
-        assert predict_model("I'm super happy",model_loaded) == 0, "\n ❌ Text:'I'm super happy' should be equals to 0 "
-        assert predict_model("I wanna kill myself",model_loaded) == 1, "\n ❌ Text: 'I wanna kill myself' should be equals to 1 "
-        print ("\n✅ Model does work fine!")
-
-    # If not suffucient accuracy, drop the model
-    else :
-        print ("\n ❌ Model accuracy is too low to be saved. \n Please fined-tune the model")
+    model_name = "log_reg"
+    running_model(model_name)
