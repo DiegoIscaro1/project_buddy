@@ -24,7 +24,7 @@ test_structure:
 #======================#
 
 run_api:
-	uvicorn api.fast:app --reload --port 8001
+	uvicorn api.fast:app --reload --port 8000
 
 
 #======================#
@@ -83,6 +83,8 @@ docker_run:
 		--env-file .env \
 		$(DOCKER_IMAGE_PATH):prod
 
+
+
 docker_run_interactively:
 	docker run -it \
 		--platform linux/amd64 \
@@ -123,6 +125,3 @@ preprocess_data:
 	python buddy/preprocessing.py
 
 download_preprocess: download_kaggle preprocess_data
-
-pytest:
-	PYTHONDONTWRITEBYTECODE=1 pytest -v --color=yes
