@@ -1,7 +1,10 @@
 # TODO: Import your package, replace this by explicit imports of what you need
 from buddy.main import predict
-from buddy import preprocessing, run_model
 import pandas as pd
+
+import nltk
+nltk.download('stopwords')
+nltk.download('wordnet')
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,11 +29,11 @@ def root():
 
 # Endpoint for https://your-domain.com/predict?input_one=154&input_two=199
 @app.get("/predict")
-def get_predict(str):
+def get_predict(txt):
     # For the sake of demonstration, just return the sum of the two inputs and the original input
     # Call the predict method with the DataFrame as argument
-    output = predict(str)
-
+    output = predict(txt)
+    
     return {
         'prediction': output
     }
