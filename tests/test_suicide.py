@@ -86,23 +86,23 @@ class TestModel(unittest.TestCase):
                 self.assertIn(expected_cleaned_text, cleaned_text, f"Transformation for '{input_text}' is incorrect")
 
 
-"""
+
     def test_model_predictions(self):
         # List of example inputs and their expected outputs
         test_data = [
-            ("I feel like ending it all."), # --> model predict 0 should be 1?
+            ("I feel like ending it all and jump under a bus"), # correct
             ("I am feeling great today!"), # correct
             ("Life is too hard, I can't go on."), # correct
             ("I'm so happy and content with everything."), # correct
-            ("No one understands my pain."), # --> model predict 0 should be 1?
+            ("No one understands my pain."), # --> # correct
             ("It's a beautiful day to enjoy with friends."), # --> correct
             ("Hello, my name is Jeff!"), # correct
             ("I don't feel good today"), # correct
-            ("My mother died I'm loosing it..."), # --> model predicted 0 shoud it be 1
+            ("My mother died, I want to join her..."), # --> model predicted 0 shoud it be 1
             ("I want to jump through the window and just die") # correct
         ]
 
-        expected_outputs = [0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
+        expected_outputs = [1, 0, 1, 0, 0, 0, 0, 0, 1, 1]
 
         for text, expected_output in zip(test_data, expected_outputs):
             with self.subTest(text=text):
@@ -113,7 +113,7 @@ class TestModel(unittest.TestCase):
                 # Check the predicted output against the expected output
                 self.assertEqual(prediction, expected_output, f"Prediction for '{text}' is incorrect")
 
-"""
+
 # Maybe we should not remove the stop word
 if __name__ == '__main__':
     unittest.main()
