@@ -19,7 +19,6 @@ LOCAL_REGISTRY_PATH = os.environ.get("LOCAL_REGISTRY_PATH")
 
 def naive_bayes_model():
     # Pipeline vectorizer + Naive Bayes
-    model_name = "naive_bayes"
     pipeline_naive_bayes = make_pipeline(
         TfidfVectorizer(max_features=4000,ngram_range=(1,2)),
         MultinomialNB(alpha=1)
@@ -27,8 +26,7 @@ def naive_bayes_model():
     return pipeline_naive_bayes
 
 def sgd_model():
-    # Pipeline vectorizer + sgd
-    model_name = "sgd_classifier"
+    # Pipeline vectorizer + sgd classifier
     pipeline_sgd = Pipeline([
         ('vectorizer', TfidfVectorizer(max_features=10000)),
         ('classifier', SGDClassifier(alpha=0.0001, loss='hinge', penalty='l2')),
@@ -134,18 +132,7 @@ def load_model (model_name):
 
         except:
             print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
-            print("\n Loading model locally ...")
-            # Get the latest model version name by the timestamp on disk
-            local_model_paths = glob.glob(f"{LOCAL_REGISTRY_PATH}/{model_name}_model*.pkl")
-
-            if not local_model_paths:
-                print(f"\n❌ Local path not found")
-                return None
-            most_recent_model_path = sorted(local_model_paths)[-1]
-
-            latest_model = joblib.load(most_recent_model_path)
-            print("✅ Model loaded locally...")
-            return latest_model
+            return None
 
     elif MODEL_TARGET == "local":
         print("\n Loading model locally ...")
