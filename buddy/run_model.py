@@ -60,8 +60,8 @@ def evaluate_model (data,model):
                                 cv = 5,
                                 scoring = ["accuracy"],
                                 verbose=2)
-    mean_accuracy = round(cv_results["test_accuracy"].mean(),2)
-    print (f"\nEvaluation : The model is accurate to {mean_accuracy}")
+    mean_accuracy = cv_results["test_accuracy"].mean()
+    print (f"\nEvaluation : The model is accurate to {round(mean_accuracy),2}")
     return mean_accuracy
 
 # Train the model
