@@ -11,7 +11,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins
@@ -27,13 +26,11 @@ def root():
         'message': "Hi, The API is running!"
     }
 
-# Endpoint for https://your-domain.com/predict?input_one=154&input_two=199
+# Endpoint for https://your-domain.com/predict?txt=I feel sad
 @app.get("/predict")
-def get_predict(txt):
-    # For the sake of demonstration, just return the sum of the two inputs and the original input
-    # Call the predict method with the DataFrame as argument
+def get_predict(txt: str):
+    # Call the predict method with the input text
     output = predict(txt)
-    
     return {
         'prediction': output
     }
