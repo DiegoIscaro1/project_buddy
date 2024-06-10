@@ -79,7 +79,7 @@ docker_build_alternative:
 docker_run:
 	docker run -it \
 		--platform linux/amd64 \
-		-e PORT=8000 -p $(DOCKER_LOCAL_PORT):8000 \
+		-e PORT=8080 -p $(DOCKER_LOCAL_PORT):8080 \
 		--env-file .env \
 		$(DOCKER_IMAGE_PATH):prod
 
