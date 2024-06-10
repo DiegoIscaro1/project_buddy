@@ -4,13 +4,12 @@ import re
 from sklearn import preprocessing
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from nltk import word_tokenize
 from transformers import BertTokenizer
 from tqdm.auto import tqdm
 
 tqdm.pandas()
 
-def label_encoding_target (data: pd.DataFrame):
+def label_encoding_target (data: pd.DataFrame) -> pd.DataFrame:
     # Initialize Label encoder
     le = preprocessing.LabelEncoder()
     # Encode the target variable and store it in a new column named "target"
@@ -18,7 +17,7 @@ def label_encoding_target (data: pd.DataFrame):
     data = data.drop(columns="class")
     return data
 
-def clean_text(sentence):
+def clean_text(sentence: str) -> str:
     # Remove leading and trailing whitespaces
     sentence = sentence.strip()
     # Split camel case words
@@ -62,7 +61,7 @@ def preprocess_data(data: pd.DataFrame):
     upload_csv(data)
 
 # Function to transform input text
-def transform_input (text: str):
+def transform_input (text: str) -> pd.Series:
     '''transform the input we received from the frontend
     into something we can process'''
     cleaned_text = clean_text(text)
