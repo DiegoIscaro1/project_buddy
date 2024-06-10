@@ -1,18 +1,19 @@
 
-from buddy.run_model import predict_model, load_model
-from buddy import preprocessing
+from buddy.run_model import model_predicting, load_model
 
 
 def predict(input):
-    model_name = "sgd_classifier"
-    output = predict_model(input,load_model(model_name))
-    return output
-
-if __name__ == "__main__":
-    input = "I feel sad. I will kill myself"
-    output = predict(input)
-    if output == 0:
+    model_name = "log_reg"
+    output = model_predicting(input,load_model(model_name),model_name)
+    if output <= 0.3:
         result = "This person is going fine!"
+    elif output <= 0.7:
+        result = "There are some concerns but it is still ok"
     else:
         result = "This person is going to commit SUICIDE!!!"
-    print (result)
+    return result
+
+if __name__ == "__main__":
+    input = "I feel sad. I will get better if people help me"
+    output = predict(input)
+    print (output)

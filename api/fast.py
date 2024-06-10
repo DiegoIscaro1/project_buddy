@@ -32,13 +32,8 @@ def root():
 def get_predict(txt):
     # For the sake of demonstration, just return the sum of the two inputs and the original input
     # Call the predict method with the DataFrame as argument
-    prediction = predict(txt)
-
-    if prediction == 0:
-        output = "This person is going fine!"
-    else:
-        output = "This person is going to commit SUICIDE!!!"
-
+    output = predict(txt)
+    
     return {
         'prediction': output
     }
