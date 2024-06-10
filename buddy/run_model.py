@@ -18,7 +18,7 @@ MODEL_TARGET = os.environ.get("MODEL_TARGET")
 BUCKET_NAME = os.environ.get("BUCKET_NAME")
 LOCAL_REGISTRY_PATH = os.environ.get("LOCAL_REGISTRY_PATH")
 
-def logreg():
+def logreg() -> Pipeline:
     # Pipeline vectorizer + Logreg
     pipeline_log_reg = Pipeline([
         ('vectorizer', TfidfVectorizer(max_features=4000)),
@@ -26,7 +26,7 @@ def logreg():
     ])
     return pipeline_log_reg
 
-def naive_bayes_model():
+def naive_bayes_model() -> Pipeline:
     # Pipeline vectorizer + Naive Bayes
     pipeline_naive_bayes = make_pipeline(
         TfidfVectorizer(max_features=4000,ngram_range=(1,2)),
@@ -34,7 +34,7 @@ def naive_bayes_model():
     )
     return pipeline_naive_bayes
 
-def sgd_model():
+def sgd_model() -> Pipeline:
     # Pipeline vectorizer + sgd classifier
     pipeline_sgd = Pipeline([
         ('vectorizer', TfidfVectorizer(max_features=10000)),
@@ -43,7 +43,7 @@ def sgd_model():
     return pipeline_sgd
 
 # Model choice
-def choice_model (model_name):
+def model_choice (model_name) -> Pipeline:
     if model_name == "sgd_classifier":
         model = sgd_model()
         print(f"\n✅ Model {model_name} found ...")
@@ -61,7 +61,7 @@ def choice_model (model_name):
 
 
 # Evaluate model
-def evaluate_model (data,model):
+def evaluate_model (data: pd.DataFrame, model: Pipeline) -> float:
     print ("\nStarting to evaluate the model ...")
     X = data["text_cleaned"]
     y = data["target"]
@@ -78,7 +78,7 @@ def evaluate_model (data,model):
     return mean_accuracy
 
 # Train the model
-def train_model (data, model):
+def train_model (data: pd.DataFrame, model: Pipeline) -> Pipeline:
     # Feature/Target
     X = data["text_cleaned"]
     y = data["target"]
@@ -90,7 +90,7 @@ def train_model (data, model):
     return trained_model
 
 # Make predictions
-def predict_model (txt: str, trained_model, model_name):
+def model_predicting (txt: str, trained_model: Pipeline, model_name: str) -> float:
     print("\nPredicting...")
     X_pred = transform_input(txt)
 
@@ -106,7 +106,7 @@ def predict_model (txt: str, trained_model, model_name):
         return y_pred_result
 
 # Save the model in Models folder
-def save_model (model, model_name):
+def save_model (model: Pipeline, model_name: str):
 
     print("\nSaving Model ...")
     timestamp = time.strftime("%Y%m%d-%H%M%S")
@@ -130,7 +130,7 @@ def save_model (model, model_name):
     return None
 
 # Load model from models folder
-def load_model (model_name):
+def load_model (model_name: str) -> Pipeline:
 
     if MODEL_TARGET == "gcs":
         print("\nLoading Model on GCS ...")
@@ -149,7 +149,6 @@ def load_model (model_name):
             latest_model = joblib.load(latest_model_path_to_save)
 
             print("\n✅ Latest model downloaded from cloud storage")
-
             return latest_model
 
         except:
@@ -171,10 +170,10 @@ def load_model (model_name):
     else:
         return None
 
-def running_model(model_name):
+def running_model(model_name: str):
 
     # Initiate model
-    model = choice_model(model_name)
+    model = model_choice(model_name)
 
     # Load data
     data = pd.read_csv("raw_data/Suicide_Detection_cleaned.csv")
@@ -193,9 +192,9 @@ def running_model(model_name):
         model_loaded = load_model(model_name)
 
         # Test model
-        y_pred = predict_model("I'm super happy",model_loaded,model_name)
+        y_pred = model_predicting("I'm super happy",model_loaded,model_name)
         assert y_pred <= 0.5, print("\n ❌ Text:'I'm super happy' should be equals to 0 ")
-        y_pred = predict_model("I wanna kill myself",model_loaded,model_name)
+        y_pred = model_predicting("I wanna kill myself",model_loaded,model_name)
         assert y_pred >= 0.5, print("\n ❌ Text: 'I wanna kill myself' should be equals to 1 ")
         print ("\n✅ Model does work fine!")
 

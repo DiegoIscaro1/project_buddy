@@ -1,8 +1,9 @@
 from buddy.run_model import model_predicting, load_model
 
+
 def predict(input):
     model_name = "log_reg"
-    output = model_predicting(input, load_model(model_name), model_name)
+    output = model_predicting(input,load_model(model_name),model_name)
     if output <= 0.3:
         result = "This person is going fine!"
     elif output <= 0.7:
