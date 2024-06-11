@@ -22,7 +22,7 @@ def logreg() -> Pipeline:
     # Pipeline vectorizer + Logreg
     pipeline_log_reg = Pipeline([
         ('vectorizer', TfidfVectorizer(max_features=4000)),
-        ('model',LogisticRegression()),
+        ('model', LogisticRegression(C=1, penalty='l1', solver='liblinear')),
     ])
     return pipeline_log_reg
 
@@ -38,7 +38,7 @@ def sgd_model() -> Pipeline:
     # Pipeline vectorizer + sgd classifier
     pipeline_sgd = Pipeline([
         ('vectorizer', TfidfVectorizer(max_features=10000)),
-        ('model', SGDClassifier(alpha=0.0001, loss="log_loss", penalty='l2')),
+        ('model', SGDClassifier(alpha=0.0001, loss='hinge', penalty='l2')),
     ])
     return pipeline_sgd
 
