@@ -1,15 +1,18 @@
 from buddy.run_model import model_predicting, load_model
 
 
-def predict(input):
+def predict(input: str)->int:
     model_name = "log_reg"
     output = model_predicting(input,load_model(model_name),model_name)
-    if output <= 0.3:
-        result = "This person is going fine!"
-    elif output <= 0.7:
-        result = "There are some concerns but it is still ok"
+    if output <= 0.25:
+        result = 0
+    elif output <= 0.6:
+        result = 1
+    elif output <=0.80:
+        result = 2
     else:
-        result = "This person is going to commit SUICIDE!!!"
+        result = 3
+
     return result
 
 if __name__ == "__main__":
