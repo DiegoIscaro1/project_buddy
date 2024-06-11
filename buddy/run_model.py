@@ -38,7 +38,7 @@ def sgd_model() -> Pipeline:
     # Pipeline vectorizer + sgd classifier
     pipeline_sgd = Pipeline([
         ('vectorizer', TfidfVectorizer(max_features=10000)),
-        ('classifier', SGDClassifier(alpha=0.0001, loss='hinge', penalty='l2')),
+        ('model', SGDClassifier(alpha=0.0001, loss='hinge', penalty='l2')),
     ])
     return pipeline_sgd
 
