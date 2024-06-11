@@ -22,7 +22,7 @@ def logreg() -> Pipeline:
     # Pipeline vectorizer + Logreg
     pipeline_log_reg = Pipeline([
         ('vectorizer', TfidfVectorizer(max_features=4000)),
-        ('model',LogisticRegression()),
+        ('model', LogisticRegression(C=1, penalty='l1', solver='liblinear')),
     ])
     return pipeline_log_reg
 
