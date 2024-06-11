@@ -28,7 +28,7 @@ def root():
 
 # Endpoint for https://your-domain.com/predict?txt=I feel sad
 @app.get("/predict")
-def get_predict(txt: str):
+def get_predict(txt: str): # output is integer
     # Call the predict method with the input text
     output = predict(txt)
     return {
