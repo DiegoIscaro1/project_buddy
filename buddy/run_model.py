@@ -21,7 +21,7 @@ LOCAL_REGISTRY_PATH = os.environ.get("LOCAL_REGISTRY_PATH")
 def logreg() -> Pipeline:
     # Pipeline vectorizer + Logreg
     pipeline_log_reg = Pipeline([
-        ('vectorizer', TfidfVectorizer(max_features=4000)),
+        ('vectorizer', TfidfVectorizer(max_features=8000,max_df=0.95,ngram_range=(1,2))),
         ('model', LogisticRegression(C=1, penalty='l1', solver='liblinear')),
     ])
     return pipeline_log_reg
