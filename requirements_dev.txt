@@ -11,6 +11,7 @@ ipykernel
 # jupyter and data viz
 matplotlib
 seaborn
+pandas
 
 # Jupyter notebook set-up
 autopep8==1.6.0
